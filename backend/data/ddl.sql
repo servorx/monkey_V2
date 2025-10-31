@@ -5,74 +5,83 @@ USE monkey_db;
 -- JWT, DON'T TOUCH
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(70) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS refresh_tokens (
+CREATE TABLE refresh_tokens (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
-    token VARCHAR(255) NOT NULL,
-    CONSTRAINT fk_rt_user_id FOREIGN KEY (user_id) REFERENCES users(id)
+    token TEXT NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    is_revoked BOOLEAN NOT NULL DEFAULT FALSE,
+    revoked_at TIMESTAMP NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_refresh_token_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS roles (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
+    rol_name VARCHAR(20) NOT NULL,
     description VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS user_roles (
-    id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     role_id INT NOT NULL,
-    CONSTRAINT fk_ur_user_id FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_ur_role_id FOREIGN KEY (role_id) REFERENCES roles(id)
+    PRIMARY KEY (user_id, role_id),
+    CONSTRAINT fk_ur_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_ur_role_id FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
+-- datos de la aplicacion
 CREATE TABLE IF NOT EXISTS words (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    word VARCHAR(255) NOT NULL,
-    definition VARCHAR(255) NOT NULL,
-    points VARCHAR(255) NOT NULL,
+    word VARCHAR(100) NOT NULL,
+    points INT DEFAULT 0,
     user_id INT NOT NULL,
-    CONSTRAINT fk_w_user_id FOREIGN KEY (user_id) REFERENCES users(id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_w_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE categories_words (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS categories_words (
     category_id INT NOT NULL,
     word_id INT NOT NULL,
-    FOREIGN KEY (category_id) REFERENCES categories(id),
-    FOREIGN KEY (word_id) REFERENCES words(id)
+    PRIMARY KEY (category_id, word_id),
+    CONSTRAINT fk_cw_category_id FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+    CONSTRAINT fk_cw_word_id FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE
 );
 
-CREATE TABLE users_words (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS users_words (
     user_id INT NOT NULL,
     word_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (word_id) REFERENCES words(id)
+    PRIMARY KEY (user_id, word_id),
+    CONSTRAINT fk_uw_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_uw_word_id FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE
 );
 
 -- STATS
-CREATE TABLE stats (
+CREATE TABLE IF NOT EXISTS stats (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     word_id INT NOT NULL,
     category_id INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (word_id) REFERENCES words(id),
-    FOREIGN KEY (category_id) REFERENCES categories(id)
+    score INT DEFAULT 0,
+    attempts INT DEFAULT 0,
+    last_played TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_s_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_s_word_id FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE,
+    CONSTRAINT fk_s_category_id FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );

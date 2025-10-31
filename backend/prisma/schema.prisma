@@ -1,6 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model 
+model User {
+  id          Int        @id @default(autoincrement())
+  username    String     @unique @db.VarChar(50)
+  password    String     @db.VarChar(70)
+  email       String     @unique @db.VarChar(150)
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  refreshTokens RefreshToken[]
+  roles       UserRole[]
+  words       Word[]
+  usersWords  UsersWords[]
+  stats       Stat[]
+}
+
+model RefreshToken {
+  id         Int      @id @default(autoincrement())
+  token      String   @db.Text
+  expires_at DateTime
+  is_revoked Boolean  @default(false)
+  revoked_at DateTime?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  rol_name    String   @db.VarChar(20)
+  description String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  users       UserRole[]
+}
+
+model UserRole {
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId Int
+
+  @@id([userId, roleId])
+}
+
+model Word {
+  id         Int      @id @default(autoincrement())
+  word       String   @db.VarChar(100)
+  points     Int      @default(0)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  categories CategoriesWords[]
+  usersWords UsersWords[]
+  stats      Stat[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+  words CategoriesWords[]
+  stats Stat[]
+}
+
+model CategoriesWords {
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId Int
+  word       Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  wordId     Int
+
+  @@id([categoryId, wordId])
+}
+
+model UsersWords {
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  word   Word @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  wordId Int
+
+  @@id([userId, wordId])
+}
+
+model Stat {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  word        Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  wordId      Int
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId  Int
+  score       Int      @default(0)
+  attempts    Int      @default(0)
+  last_played DateTime @default(now())
+}

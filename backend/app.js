@@ -11,6 +11,7 @@ import swaggerFile from './swagger_output.json' with { type: 'json' };
 // import de middlewares
 import { rateLimiter } from './middlewares/rateLimit.js'
 import { corsOptions } from './middlewares/cors.js'
+import { validationErrorHandler } from './middlewares/validationErrorHandler.js'
 
 dotenv.config()
 
@@ -21,10 +22,14 @@ const app = express()
 export function CreateApp() {
   // desabilitar el bloque de seguridad de express
   app.disable('x-powered-by')
+  // middleware de cors
   app.use(cors(corsOptions))
+  // esto es para parsear el body como json
   app.use(express.json())
+  // log de requests
   app.use(morgan('dev'))
-
+  // middleware de validacion de errores
+  app.use(validationErrorHandler)
   // app.use('/api/v1/auth', require('./routes/auth'))
   // app.use('/api/v1/users', require('./routes/users'))
 
