@@ -1,3 +1,4 @@
+// esto es para manejar errores de validación usando Zod
 export function validationErrorHandler(err, req, res, next) {
   if (err.name === 'ZodError') {
     const errors = err.errors.map((e) => e.message);
