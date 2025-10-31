@@ -1,6 +1,9 @@
-import rateLimit from "express-rate-limit"; 
+import rateLimit from 'express-rate-limit'
 
 export const rateLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 20, // limit each IP to 100 requests per windowMs
-});
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // límite de 100 requests por IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Demasiadas solicitudes desde esta IP, intenta más tarde.'
+})
