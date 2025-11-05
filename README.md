@@ -227,7 +227,7 @@ Swagger genera documentación automática a partir de swagger_output.json.
 🧩 Siguientes pasos:
 
 - Implementar arquitectura de rutas, controladores y servicios.
-- Integrar Prisma ORM y configurar conexión a MySQL/PostgreSQL.
+- Integrar Prisma ORM y configurar conexión a MySQL.
 - Crear sistema de autenticación JWT.
 - Añadir Zod para validaciones de esquemas.
 - Configurar tests automáticos con Jest.

@@ -9,9 +9,9 @@ import swaggerUi from 'swagger-ui-express'
 import swaggerFile from './swagger_output.json' with { type: 'json' };
 
 // import de middlewares
-import { rateLimiter } from './middlewares/rateLimit.js'
-import { corsOptions } from './middlewares/cors.js'
-import { validationErrorHandler } from './middlewares/validationErrorHandler.js'
+import { rateLimiter } from './middlewares/rate-Limit.middleware.js'
+import { corsOptions } from './middlewares/cors.middleware.js'
+import { validationErrorHandler } from './middlewares/validation-error-handler.middleware.js'
 
 dotenv.config()
 
