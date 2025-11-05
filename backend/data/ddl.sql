@@ -3,6 +3,7 @@ CREATE DATABASE IF NOT EXISTS monkey_db;
 USE monkey_db;
 
 -- JWT, DON'T TOUCH
+-- -----------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -40,6 +41,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
     CONSTRAINT fk_ur_role_id FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 ) ENGINE=INNODB;
 
+-- -----------------------------------------------------------------------
 -- datos de la aplicacion
 CREATE TABLE IF NOT EXISTS words (
     id INT PRIMARY KEY AUTO_INCREMENT,
