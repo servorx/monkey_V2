@@ -101,3 +101,5 @@ model Stat {
   attempts    Int      @default(0)
   last_played DateTime @default(now())
 }
+
+model 

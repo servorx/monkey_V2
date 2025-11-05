@@ -5,7 +5,7 @@ const doc = {
         title: 'API de monkeytype',
         description: 'Documentación de la API para la gestión de mascotas',
     },
-    host: 'localhost:3000',
+    host: 'localhost:4000',
     schemes: ['http'],
 };
 

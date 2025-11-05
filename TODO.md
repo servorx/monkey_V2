@@ -285,3 +285,9 @@ export function validationErrorHandler(err, req, res, next) {
 Agrega un seed.js para poblar datos iniciales (roles, admin user, etc.)
 
 Integra Jest o Mocha para tests unitarios (opcional).
+
+
+
+
+
+<!-- TODO: cambiar la base de datos con gemini -->
