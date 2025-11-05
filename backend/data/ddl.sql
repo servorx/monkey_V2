@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS users (
     twitter_username VARCHAR(50) NULL,
     website_url VARCHAR(255) NULL,
     profile_score INT DEFAULT 0,
+    tests_started INT DEFAULT 0,
+    tests_completed INT DEFAULT 0,
+    time_played TIME,
     preferred_language VARCHAR(4) NOT NULL DEFAULT 'en', -- idioma por defecto
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -81,8 +84,7 @@ CREATE TABLE IF NOT EXISTS words (
 CREATE TABLE IF NOT EXISTS categories (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL UNIQUE, -- es unique por si un usuario quiere crear una categoria con el mismo nombre
-    description TEXT NULL,
-    CONSTRAINT fk_c_owner_user_id FOREIGN KEY (owner_user_id) REFERENCES users(id) ON DELETE SET NULL
+    description TEXT NULL
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS categories_words (
@@ -150,7 +152,6 @@ CREATE TABLE IF NOT EXISTS leaderboard_entries (
     mode_value INT NOT NULL,
     time_frame ENUM('daily', 'weekly', 'monthly', 'all_time') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
     UNIQUE KEY uk_leaderboard_entry (user_id, mode_type, mode_value, time_frame), -- Un solo mejor score por modo y marco de tiempo
     CONSTRAINT fk_le_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_le_test_run_id FOREIGN KEY (test_run_id) REFERENCES test_runs(id) ON DELETE CASCADE
