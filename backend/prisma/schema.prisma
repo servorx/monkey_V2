@@ -8,98 +8,242 @@ datasource db {
 }
 
 model User {
-  id          Int        @id @default(autoincrement())
-  username    String     @unique @db.VarChar(50)
-  password    String     @db.VarChar(70)
-  email       String     @unique @db.VarChar(150)
-  created_at  DateTime   @default(now())
-  updated_at  DateTime   @updatedAt
-  refreshTokens RefreshToken[]
-  roles       UserRole[]
-  words       Word[]
-  usersWords  UsersWords[]
-  stats       Stat[]
+  id                  Int           @id @default(autoincrement())
+  username            String        @unique
+  password            String
+  email               String        @unique
+  profile_picture_url String?       
+  bio                 String?
+  keyboard            String?
+  github_username     String?
+  twitter_username    String?
+  website_url         String?
+  profile_score       Int           @default(0)
+  tests_started       Int           @default(0)
+  tests_completed     Int           @default(0)
+  time_typing         DateTime?
+  preferred_language  String        @default("en")
+  is_active           Boolean       @default(true)
+  created_at          DateTime      @default(now())
+  updated_at          DateTime      @updatedAt
+
+  // Relaciones
+  refresh_tokens      RefreshToken[]
+  roles               UserRole[]
+  settings            UserSettings?
+  words               Word[]        @relation("UserWordsCustom")
+  userWords           UsersWords[]  @relation("UserWordFavs")
+  word_mastery        WordMastery[]
+  test_runs           TestRun[]
+  leaderboard_entries LeaderboardEntry[]
+  user_badges         UserBadge[]
+
+  @@map("users")
 }
 
 model RefreshToken {
-  id         Int      @id @default(autoincrement())
-  token      String   @db.Text
-  expires_at DateTime
-  is_revoked Boolean  @default(false)
-  revoked_at DateTime?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     Int
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  token       String
+  expires_at  DateTime
+  is_revoked  Boolean  @default(false)
+  revoked_at  DateTime?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  // Relaciones
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([is_revoked, user_id], name: "idx_is_revoked_user")
+  @@index([expires_at], name: "idx_is_revoked_expires_at")
+  @@map("refresh_tokens")
 }
 
 model Role {
-  id          Int      @id @default(autoincrement())
-  rol_name    String   @db.VarChar(20)
+  id          Int        @id @default(autoincrement())
+  role_name   String
   description String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  users       UserRole[]
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+
+  users UserRole[]
+
+  @@map("roles")
 }
 
 model UserRole {
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
-  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  roleId Int
+  user_id Int
+  role_id Int
 
-  @@id([userId, roleId])
+  // Relaciones
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [role_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, role_id])
+  @@map("user_roles")
+}
+
+model UserSettings {
+  user_id    Int      @id
+  theme_name String   @default("monkey")
+  font_name  String   @default("Roboto Mono")
+  test_options Json?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relaciones
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
 }
 
 model Word {
-  id         Int      @id @default(autoincrement())
-  word       String   @db.VarChar(100)
-  points     Int      @default(0)
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     Int
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  categories CategoriesWords[]
-  usersWords UsersWords[]
-  stats      Stat[]
+  id          Int          @id @default(autoincrement())
+  word        String
+  points      Int           @default(0)
+  user_id     Int?          
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+
+  // Relaciones
+  user            User?            @relation("UserWordsCustom", fields: [user_id], references: [id], onDelete: SetNull)
+  languagesWords LanguagesWords[]
+  usersWords      UsersWords[]     @relation("UserWordFavs")
+  word_mastery    WordMastery[]
+
+  @@map("words")
 }
 
-model Category {
-  id   Int    @id @default(autoincrement())
-  name String
-  words CategoriesWords[]
-  stats Stat[]
+model Language {
+  id          Int               @id @default(autoincrement())
+  name        String             @unique
+  description String?
+  test_runs   TestRun[]
+  languagesWords LanguagesWords[]
+
+  @@map("languages")
 }
 
-model CategoriesWords {
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId Int
-  word       Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
-  wordId     Int
+model LanguagesWords {
+  language_id Int
+  word_id     Int
 
-  @@id([categoryId, wordId])
+  // Relaciones
+  language Language @relation(fields: [language_id], references: [id], onDelete: Cascade)
+  word     Word     @relation(fields: [word_id], references: [id], onDelete: Cascade)
+
+  @@id([language_id, word_id])
+  @@map("categories_words")
 }
 
 model UsersWords {
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
-  word   Word @relation(fields: [wordId], references: [id], onDelete: Cascade)
-  wordId Int
+  user_id Int
+  word_id Int
 
-  @@id([userId, wordId])
+  user User @relation("UserWordFavs", fields: [user_id], references: [id], onDelete: Cascade)
+  word Word @relation("UserWordFavs", fields: [word_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, word_id])
+  @@map("users_words")
 }
 
-model Stat {
+// ------------------------------------------------------
+// Stats
+// ------------------------------------------------------
+
+model WordMastery {
+  id                   Int       @id @default(autoincrement())
+  user_id              Int
+  word_id              Int
+  total_correct_attempts Int     @default(0)
+  total_error_count    Int       @default(0)
+  confidence_score     Decimal   @default(0.0000)
+  last_played          DateTime  @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  word Word @relation(fields: [word_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, word_id], name: "uk_user_word")
+  @@map("word_mastery")
+}
+
+model TestRun {
+  id           Int       @id @default(autoincrement())
+  user_id      Int
+  wpm          Decimal
+  accuracy     Decimal
+  raw_wpm      Decimal
+  consistency  Decimal
+  error_count  Int
+  mode_type    String
+  mode_value   Int
+  duration_ms  Int
+  raw_data     Json?
+  category_id  Int?
+  score        Int
+  created_at   DateTime  @default(now())
+
+  // Relaciones
+  user     User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  leaderboard_entries LeaderboardEntry[]
+
+  @@map("test_runs")
+}
+
+// ------------------------------------------------------
+// Leaderboard
+// ------------------------------------------------------
+
+model LeaderboardEntryTimeFrame {
   id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-  word        Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
-  wordId      Int
-  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId  Int
-  score       Int      @default(0)
-  attempts    Int      @default(0)
-  last_played DateTime @default(now())
+  time_frame  String
+  entries     LeaderboardEntry[]
+
+  @@map("leaderboard_entries_time_frames")
 }
 
-model 
+model LeaderboardEntry {
+  id             Int      @id @default(autoincrement())
+  user_id        Int
+  test_run_id    Int
+  time_frame_id  Int
+  created_at     DateTime @default(now())
+
+  // Relaciones
+  user        User                     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  test_run    TestRun                  @relation(fields: [test_run_id], references: [id], onDelete: Cascade)
+  time_frame  LeaderboardEntryTimeFrame @relation(fields: [time_frame_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, test_run_id], name: "uk_leaderboard_entry")
+  @@map("leaderboard_entries")
+}
+
+// ------------------------------------------------------
+// Badges
+// ------------------------------------------------------
+
+model Badge {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  icon_url    String?
+  min_score   Int
+  created_at  DateTime @default(now())
+
+  user_badges UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  user_id  Int
+  badge_id Int
+  earned_at DateTime @default(now())
+
+  user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badge_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, badge_id])
+  @@map("user_badges")
+}
