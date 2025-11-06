@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS monkey_db;
 CREATE DATABASE IF NOT EXISTS monkey_db;
 USE monkey_db;
 
--- TODO: include badges table and user badges relation with the score of the user 
 -- -----------------------------------------------------------------------
 -- JWT, AND USER SETTINGS, DON'T TOUCH
 -- -----------------------------------------------------------------------
@@ -142,11 +141,11 @@ CREATE TABLE IF NOT EXISTS test_runs (
   mode_value INT NOT NULL, -- son datos como "60" (segundos), "100" (palabras)
   duration_ms INT NOT NULL, -- duracion de la prueba en milisegundos 
   raw_data JSON, -- tiempo de tecleo por palabra u otra informacion detallada
-  category_id INT NULL,
+  language_id INT NULL,
   score INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- momento de creacion de la prueba 
   CONSTRAINT fk_tr_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  CONSTRAINT fk_tr_category_id FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+  CONSTRAINT fk_tr_language_id FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE CASCADE
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS leaderboard_entries_time_frames (

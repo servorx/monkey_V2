@@ -1,9 +1,12 @@
 generator client {
+  // proveedor del cliente de prisma
   provider = "prisma-client-js"
 }
 
 datasource db {
+  // proveedor de la base de datos
   provider = "mysql"
+  // conexion a la base de datos
   url      = env("DATABASE_URL")
 }
 
@@ -185,7 +188,7 @@ model TestRun {
 
   // Relaciones
   user     User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  category Category? @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  language Language? @relation(fields: [category_id], references: [id], onDelete: Cascade)
   leaderboard_entries LeaderboardEntry[]
 
   @@map("test_runs")
