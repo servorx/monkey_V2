@@ -1,7 +1,7 @@
-import { AuthService } from '../services/authService.js'
+import { AuthService } from '../services/auth.service.js'
 import { z } from 'zod'
 
-export async function register(req, res, next) {
+export async function register (req, res, next) {
   try {
     const schema = z.object({
       username: z.string().min(3),
@@ -16,7 +16,7 @@ export async function register(req, res, next) {
   }
 }
 
-export async function login(req, res, next) {
+export async function login (req, res, next) {
   try {
     const schema = z.object({
       email: z.string().email(),

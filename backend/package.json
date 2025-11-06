@@ -35,5 +35,8 @@
     "standard": "17.1.2",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
+  },
+  "eslintConfig": {
+    "extends": "standard"
   }
 }

@@ -3,10 +3,11 @@ import jwt from 'jsonwebtoken'
 import { JWT_SECRET, JWT_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_DAYS } from '../config/config.js'
 import { UserRepository } from '../repositories/userRepository.js'
 import prisma from '../repositories/prisma/prismaClient.js'
+import cryptoRandom from 'crypto-random-string'
 
 // TODO: revisar todo eso
-export const AuthService = {
-  async register({ username, email, password }) {
+export const authService = {
+  async register ({ username, email, password }) {
     const existing = await UserRepository.findByEmail(email)
     if (existing) throw Object.assign(new Error('Email already in use'), { status: 400 })
 
@@ -16,13 +17,14 @@ export const AuthService = {
     return user
   },
 
-  async login({ email, password }) {
+  async login ({ email, password }) {
     const user = await UserRepository.findByEmail(email)
     if (!user) throw Object.assign(new Error('Invalid credentials'), { status: 401 })
     const isValid = await bcrypt.compare(password, user.password)
     if (!isValid) throw Object.assign(new Error('Invalid credentials'), { status: 401 })
 
     const accessToken = jwt.sign({ sub: user.id, email: user.email }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN })
+    // TODO: implementar la funcion para poder crear el cruptoRandom
     const refreshToken = cryptoRandom() // implementa función que genere token seguro
 
     // persist refresh token
