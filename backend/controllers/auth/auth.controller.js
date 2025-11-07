@@ -1,4 +1,4 @@
-import { AuthService } from '../services/auth.service.js'
+import { AuthService } from '../../services/auth/auth.service.js'
 import { z } from 'zod'
 
 export async function register (req, res, next) {

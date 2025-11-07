@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { SALT_ROUNDS, SECRET_JWT_KEY, JWT_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_DAYS } from '../config/config.js'
-import prisma from './prisma/prismaClient.js'
+import { SALT_ROUNDS, SECRET_JWT_KEY, JWT_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_DAYS } from '../../config/config.js'
+import prisma from '../prisma/prismaClient.js'
 
 export const authRepository = {
   async register (data) {

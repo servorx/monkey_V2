@@ -3,23 +3,25 @@ import express from 'express'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import rateLimit from 'express-rate-limit'
-// import { PrismaClient } from '@prisma/client'
+// esto es para leer el json importado
+import { readFileSync } from 'node:fs'
 import swaggerUi from 'swagger-ui-express'
-import swaggerFile from './swagger_output.json' with { type: 'json' };
-
 // import de middlewares
 import { rateLimiter } from './middlewares/rate-Limit.middleware.js'
 import { corsOptions } from './middlewares/cors.middleware.js'
 import { validationErrorHandler } from './middlewares/validation-error-handler.middleware.js'
 
+// importar swagger
+const swaggerFile = JSON.parse(readFileSync(new URL('./swagger_output.json', import.meta.url)))
+
+// cargar variables de entorno
 dotenv.config()
 
 // const prisma = new PrismaClient()
 
 const app = express()
 
-export function CreateApp() {
+export function CreateApp () {
   // desabilitar el bloque de seguridad de express
   app.disable('x-powered-by')
   // middleware de cors
@@ -41,7 +43,7 @@ export function CreateApp() {
   })
 
   // Swagger UI
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
   const port = process.env.PORT ?? 3000
 
@@ -49,8 +51,6 @@ export function CreateApp() {
     console.log(`Server running on port http://localhost:${port}`)
   })
 }
-
-
 
 // import express from 'express'
 // import morgan from 'morgan'

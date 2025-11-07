@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { JWT_SECRET, JWT_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_DAYS } from '../config/config.js'
+import { JWT_SECRET, JWT_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_DAYS } from '../../config/config.js'
 import { UserRepository } from '../repositories/userRepository.js'
-import prisma from '../repositories/prisma/prismaClient.js'
+import prisma from '../../repositories/prisma/prismaClient.js'
 import cryptoRandom from 'crypto-random-string'
 
 // TODO: revisar todo eso
