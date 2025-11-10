@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../config/index.js'
 // helper instance
-import prismaClient from '../repositories/prisma/prismaClient.js'
+import prismaClient from '../prisma/prismaClient.js'
 
 // middleware para proteger rutas con JWT
 export async function jwtAuth (req, res, next) {

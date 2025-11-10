@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS test_runs (
 
 CREATE TABLE IF NOT EXISTS leaderboard_entries_time_frames (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  time_frame VARCHAR(50) NOT NULL,
+  time_frame VARCHAR(50) NOT NULL
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS leaderboard_entries (
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS leaderboard_entries (
   test_run_id INT NOT NULL, -- enlaza al test_run original
   time_frame_id INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY uk_leaderboard_entry (user_id, mode_type), -- Un solo mejor score por modo y marco de tiempo
+  UNIQUE KEY uk_leaderboard_entry (user_id, time_frame_id), -- Un solo mejor score por modo y marco de tiempo
   CONSTRAINT fk_le_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   CONSTRAINT fk_le_test_run_id FOREIGN KEY (test_run_id) REFERENCES test_runs(id) ON DELETE CASCADE,
   CONSTRAINT fk_le_time_frame FOREIGN KEY (time_frame_id) REFERENCES leaderboard_entries_time_frames(id) ON DELETE CASCADE
