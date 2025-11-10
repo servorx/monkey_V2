@@ -10,7 +10,8 @@
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:generate": "prisma generate",
     "seed": "node prisma/seed.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "",
@@ -35,5 +36,8 @@
     "standard": "17.1.2",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
+  },
+  "eslintConfig": {
+    "extends": "standard"
   }
 }
