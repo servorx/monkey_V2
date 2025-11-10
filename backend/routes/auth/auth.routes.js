@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { validateSchema } from '../middlewares/validateSchema.js'
 import { registerUserSchema } from '../schemas/auth/user.schema.js'
 
-const router = Router()
+export const router = Router()
 
 router.post('/register', validateSchema(registerUserSchema), async (req, res) => {
   // si llega hasta aca con el validador de schema, es que el usuario es válido
@@ -10,4 +10,9 @@ router.post('/register', validateSchema(registerUserSchema), async (req, res) =>
   // TODO: saber que es user y que es lo que se pasa a la función
   const user = await req.context.user.register(req.body)
   res.status(201).json(user)
+})
+router.post('/login', validateSchema(registerUserSchema), async (req, res) => {
+  // si llega hasta aca con el validador de schema, es que el usuario es válido
+  const user = await req.context.user.login(req.body)
+  res.status(200).json(user)
 })

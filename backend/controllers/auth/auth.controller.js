@@ -1,31 +1,44 @@
-import { AuthService } from '../../services/auth/auth.service.js'
-import { z } from 'zod'
+import { User } from '../../models/user.model.js'
+import { comparePasswords, hashPassword } from '../../utils/password-hasher.js'
 
-export async function register (req, res, next) {
-  try {
-    const schema = z.object({
-      username: z.string().min(3),
-      email: z.string().email(),
-      password: z.string().min(6)
-    })
-    const data = schema.parse(req.body)
-    const user = await AuthService.register(data)
-    res.status(201).json({ success: true, user: { id: user.id, username: user.username, email: user.email } })
-  } catch (err) {
-    next(err)
+export const login = async (req, res) => {
+  const { email, password } = req.body
+  const user = await User.findOne({ email })
+
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid Credentials' })
   }
+
+  if (!comparePasswords(password, user.password)) {
+    return res.status(401).json({ message: 'Invalid Credentials' })
+  }
+
+  const token = user.generateAuthToken()
+
+  res.status(200).json({
+    message: 'Login Successful',
+    token
+  })
 }
 
-export async function login (req, res, next) {
-  try {
-    const schema = z.object({
-      email: z.string().email(),
-      password: z.string()
-    })
-    const data = schema.parse(req.body)
-    const result = await AuthService.login(data)
-    res.json({ success: true, ...result })
-  } catch (err) {
-    next(err)
+export const register = async (req, res) => {
+  const { email, password } = req.body
+
+  const user = await User.findOne({ email })
+
+  if (user) {
+    return res.status(400).json({ message: 'User already exists' })
   }
+
+  const hashedPassword = await hashPassword(password)
+
+  const newUser = await User.create({
+    email,
+    password: hashedPassword
+  })
+
+  res.status(201).json({
+    message: 'User created successfully',
+    token: newUser.generateAuthToken()
+  })
 }
