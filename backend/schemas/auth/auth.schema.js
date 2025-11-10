@@ -24,3 +24,9 @@ export const AuthRegisterSchema = AuthBaseSchema.extend({
 export const AuthLoginSchema = AuthBaseSchema.extend({
   remember_me: z.boolean().default(false)
 })
+
+// respuesta al logear o registrar
+export const AuthResponseSchema = AuthBaseSchema.extend({
+  token: z.string(),
+  user: AuthRegisterSchema
+})

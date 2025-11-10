@@ -7,6 +7,10 @@ export const RoleBaseSchema = z.object({
 
 export const RoleCreateSchema = RoleBaseSchema
 export const RoleUpdateSchema = RoleBaseSchema.partial()
+export const RoleDeleteSchema = z.object({
+  id: z.number().int()
+})
+
 export const RoleResponseSchema = RoleBaseSchema.extend({
   id: z.number().int(),
   created_at: z.string(),

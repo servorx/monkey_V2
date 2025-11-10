@@ -1,23 +1,19 @@
-import prisma from '../prisma/prismaClient.js'
+import z from 'zod'
 
-export const wordsRepository = {
-  async findAll () {
-    return prisma.words.findMany()
-  },
+export const WordBaseSchema = z.object({
+  word: z.string().min(3).max(100).unique(),
+  points: z.number().int().default(0),
+  user_id: z.number().int().nullable().optional()
+})
 
-  async findById (id) {
-    return prisma.words.findUnique({ where: { id } })
-  },
+export const WordCreateSchema = WordBaseSchema
+export const WordUpdateSchema = WordBaseSchema.partial()
+export const WordDeleteSchema = z.object({
+  id: z.number().int()
+})
 
-  async create (data) {
-    return prisma.words.create({ data })
-  },
-
-  async update (id, data) {
-    return prisma.words.update({ where: { id }, data })
-  },
-
-  async delete (id) {
-    return prisma.words.delete({ where: { id } })
-  }
-}
+export const WordResponseSchema = WordBaseSchema.extend({
+  id: z.number().int(),
+  created_at: z.string(),
+  updated_at: z.string()
+})

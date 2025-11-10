@@ -10,3 +10,13 @@ export const RefreshTokenBaseSchema = z.object({
 
 export const RefreshTokenCreateSchema = RefreshTokenBaseSchema
 export const RefreshTokenUpdateSchema = RefreshTokenBaseSchema.partial()
+export const RefreshTokenDeleteSchema = z.object({
+  id: z.number().int()
+})
+
+// respuesta al crear un token de refresco
+export const RefreshTokenResponseSchema = RefreshTokenBaseSchema.extend({
+  id: z.number().int(),
+  created_at: z.string(),
+  updated_at: z.string()
+})
