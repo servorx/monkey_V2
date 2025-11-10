@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../config/index.js'
 // helper instance
-import prismaClient from '../prisma/prismaClient.js'
+import prisma from '../prisma/prismaClient.js'
 
 // middleware para proteger rutas con JWT
 export async function jwtAuth (req, res, next) {
@@ -18,7 +18,7 @@ export async function jwtAuth (req, res, next) {
     // verificar token con la clave secreta
     const payload = jwt.verify(token, JWT_SECRET)
     // agregar info del usuario al request para poder acceder a la rutas protegidas
-    const user = await prismaClient.user.findUnique({ where: { id: payload.sub } })
+    const user = await prisma.user.findUnique({ where: { id: payload.sub } })
     if (!user) {
       // si el usuario no existe, redirigir a la ruta de login con el error 401
       return res.status(401).json({ message: 'Unauthorized' })

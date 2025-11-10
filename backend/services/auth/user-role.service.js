@@ -1,7 +1,27 @@
-import { z } from 'zod'
+import { userRoleRepository } from "../../repositories/auth/user-role.repository";
 
-export const createUserSchema = z.object({
-  name: z.string().min(3, 'El nombre debe tener al menos 3 caracteres'),
-  email: z.string().email('El correo electrónico no es válido'),
-  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres')
-})
+export const userRoleService = {
+  async getAllUserRoles() {
+    return userRoleRepository.findAll();
+  },
+  async getUserRoleById(id) {
+    const userRole = await userRoleRepository.findById(id);
+    if (!userRole) throw new Error("UserRole not found");
+    return userRole;
+  },
+  async createUserRole(data) {
+    const user = await userRoleRepository.findById(data.user_id);
+    if (!user) throw new Error("User not found");
+    const role = await userRoleRepository.findById(data.role_id);
+    if (!role) throw new Error("Role not found");
+    return userRoleRepository.create({ user_id: data.user_id, role_id: data.role_id });
+  },
+
+  async updateUserRole(id, data) {
+    return userRoleRepository.update(id, data);
+  },
+
+  async deleteUserRole(id) {
+    return userRoleRepository.delete(id);
+  },
+};

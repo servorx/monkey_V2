@@ -1,40 +1,41 @@
-import { userService } from '../../services/auth/user.service.js'
+import { UserCreateSchema, UserUpdateSchema } from '../../schemas/auth/user.schema.js';
+import { userService } from '../services/user.service.js';
 
 export const userController = {
-  async register (req, res, next) {
+  async getAll(req, res) {
+    const users = await userService.getAllUsers();
+    res.json(users);
+  },
+
+  async getById(req, res) {
+    const { id } = req.params;
+    const user = await userService.getUserById(Number(id));
+    res.json(user);
+  },
+
+  async create(req, res) {
     try {
-      const user = await userService.registerUser(req.body)
-      res.status(201).json({ message: 'User created successfully', user })
-    } catch (err) {
-      next(err)
+      const data = UserCreateSchema.parse(req.body);
+      const newUser = await userService.createUser(data);
+      res.status(201).json(newUser);
+    } catch (error) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ errors: error.errors });
+      }
+      res.status(500).json({ message: error.message });
     }
   },
 
-  async profile (req, res, next) {
-    try {
-      const user = await userService.getUserProfile(req.user.id)
-      res.json(user)
-    } catch (err) {
-      next(err)
-    }
+  async update(req, res) {
+    const { id } = req.params;
+    const data = UserUpdateSchema.parse(req.body);
+    const updated = await userService.updateUser(Number(id), data);
+    res.json(updated);
   },
 
-  async updateProfile (req, res, next) {
-    try {
-      const updated = await userService.updateProfile(req.user.id, req.body)
-      res.json(updated)
-    } catch (err) {
-      next(err)
-    }
+  async remove(req, res) {
+    const { id } = req.params;
+    await userService.deleteUser(Number(id));
+    res.status(204).send();
   },
-
-  async login (req, res, next) {
-    try {
-      const { email, password } = req.body
-      const user = await userService.login(email, password)
-      res.json(user)
-    } catch (err) {
-      next(err)
-    }
-  }
-}
+};

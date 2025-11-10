@@ -1,23 +1,27 @@
-import { userRepository } from '../repositories/user.repository'
-import bcrypt from 'bcrypt'
+import { userRepository } from '../../repositories/auth/user.repository.js'
 
 export const userService = {
-  async registerUser (userData) {
-    const existing = await userRepository.findByEmail(userData.email)
-    if (existing) throw new Error('Email already in use')
-
-    const hashed = await bcrypt.hash(userData.password, 10)
-    const user = await userRepository.create({ ...userData, password: hashed })
-    return user
+  async getAllUsers () {
+    return userRepository.findAll()
   },
 
-  async getUserProfile (id) {
+  async getUserById (id) {
     const user = await userRepository.findById(id)
     if (!user) throw new Error('User not found')
     return user
   },
 
-  async updateProfile (id, data) {
+  async createUser (data) {
+    const existing = await userRepository.findByEmail(data.email)
+    if (existing) throw new Error('Email already in use')
+    return userRepository.create(data)
+  },
+
+  async updateUser (id, data) {
     return userRepository.update(id, data)
+  },
+
+  async deleteUser (id) {
+    return userRepository.delete(id)
   }
 }

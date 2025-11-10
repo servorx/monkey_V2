@@ -1,9 +1,6 @@
 // importa el cliente de Prisma
-import { PrismaClient } from '@prisma/client'
+import prisma from './prismaClient'
 import bcrypt from 'bcrypt'
-// genera una instancia de PrismaClient para poder trabajar en el codigo
-const prisma = new PrismaClient()
-
 // funcion para generar un hash de contraseña en los seeders
 function hashedPassword (password) {
   return bcrypt.hashSync(password, 10)

@@ -25,8 +25,15 @@ export const UserCreateSchema = UserBaseSchema.pick({
   email: true
 })
 
+// actualizar usuario
 export const UserUpdateSchema = UserBaseSchema.partial()
 
+// eliminar usuario
+export const UserDeleteSchema = z.object({
+  id: z.number().int()
+})
+
+// respuesta al crear usuar
 export const UserResponseSchema = UserBaseSchema.extend({
   id: z.number().int(),
   created_at: z.string(),
