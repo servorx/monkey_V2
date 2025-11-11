@@ -1,12 +1,16 @@
 import prisma from '../prisma/prismaClient.js'
 
-export const wordsRepository = {
+export const wordRepository = {
   async findAll () {
     return prisma.words.findMany()
   },
 
   async findById (id) {
     return prisma.words.findUnique({ where: { id } })
+  },
+
+  async findByWord (word) {
+    return prisma.words.findUnique({ where: { word } })
   },
 
   async create (data) {

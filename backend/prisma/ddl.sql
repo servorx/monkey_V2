@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS user_settings (
 -- -----------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS words (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  word VARCHAR(100) NOT NULL,
+  word VARCHAR(85) NOT NULL,
   -- 'points' podria ser un peso o dificultad de la palabra
   points INT DEFAULT 0, 
   -- user_id para palabras añadidas por el usuario (custom)

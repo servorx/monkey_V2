@@ -10,7 +10,7 @@ import { readFileSync } from 'node:fs'
 import { rateLimiter } from './middlewares/rate-limit.middleware.js'
 import { corsOptions } from './middlewares/cors.middleware.js'
 import { validationErrorHandler } from './middlewares/validation-error-handler.middleware.js'
-
+import { globalErrorHandler } from './middlewares/error-handler.middleware.js'
 // Rutas principales
 import routes from './routes/index.js'
 
@@ -25,6 +25,7 @@ export function CreateApp () {
   app.use(express.json())
   app.use(morgan('dev'))
   app.use(rateLimiter)
+  app.use(globalErrorHandler)
 
   // 📘 Swagger
   const swaggerFile = JSON.parse(readFileSync(new URL('./swagger_output.json', import.meta.url)))

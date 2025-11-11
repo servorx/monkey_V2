@@ -1,23 +1,13 @@
-import prisma from '../prisma/prismaClient.js'
+import { Router } from 'express'
+import { wordController } from '../controllers/word.controller.js'
 
-export const wordsRepository = {
-  async findAll () {
-    return prisma.words.findMany()
-  },
+const router = Router()
 
-  async findById (id) {
-    return prisma.words.findUnique({ where: { id } })
-  },
+router.get('/', wordController.getAll)
+router.get('/:id', wordController.getById)
+router.get('/:name', wordController.getByName)
+router.post('/', wordController.create)
+router.put('/:id', wordController.update)
+router.delete('/:id', wordController.remove)
 
-  async create (data) {
-    return prisma.words.create({ data })
-  },
-
-  async update (id, data) {
-    return prisma.words.update({ where: { id }, data })
-  },
-
-  async delete (id) {
-    return prisma.words.delete({ where: { id } })
-  }
-}
+export default router
