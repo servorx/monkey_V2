@@ -1,4 +1,4 @@
-import { languageRepository } from '../repositories/language.repository'
+import { languageRepository } from '../repositories/language.repository.js'
 import {
   NotFoundError,
   ConflictError,
@@ -6,7 +6,7 @@ import {
   DatabaseError
 } from '../utils/errors.js'
 
-export const languageService = {
+export const languageWordService = {
   async getAll () {
     try {
       return await languageRepository.findAll()

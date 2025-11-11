@@ -9,3 +9,5 @@ router.get('/:name', leaderboardEntryTimeFrameController.getByName)
 router.post('/', leaderboardEntryTimeFrameController.create)
 router.patch('/:id', leaderboardEntryTimeFrameController.update)
 router.delete('/:id', leaderboardEntryTimeFrameController.remove)
+
+export default router

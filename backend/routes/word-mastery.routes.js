@@ -8,3 +8,5 @@ router.get('/:user_id/word/:word_id', wordMasteryController.getByUserAndWord)
 router.post('/', wordMasteryController.create)
 router.patch('/:user_id/word/:word_id', wordMasteryController.update)
 router.delete('/:user_id/word/:word_id', wordMasteryController.remove)
+
+export default router

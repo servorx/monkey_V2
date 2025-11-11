@@ -1,4 +1,4 @@
-import { userSettingRepository } from '../repositories/userSetting.repository.js'
+import { userSettingRepository } from '../repositories/user-setting.repository.js'
 import {
   NotFoundError,
   ValidationError,

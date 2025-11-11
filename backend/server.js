@@ -1,10 +1,10 @@
-import { CreateApp } from './app.js'
+import app from './app.js'
+import dotenv from 'dotenv'
 
-CreateApp()
+dotenv.config()
 
-// import app from './app.js'
-// import { PORT } from './config/index.js'
-
-// app.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`)
-// })
+const port = process.env.PORT ?? 4000
+app.listen(port, () => {
+  console.log(`🚀 Servidor corriendo en: http://localhost:${port}`)
+  console.log(`📘 Documentación disponible en: http://localhost:${port}/api-docs`)
+})

@@ -8,3 +8,5 @@ router.get('/:id', refreshTokenController.getById)
 router.post('/', refreshTokenController.create)
 router.patch('/:id', refreshTokenController.update)
 router.delete('/:id', refreshTokenController.remove)
+
+export default router

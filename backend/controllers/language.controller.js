@@ -1,6 +1,6 @@
-import { LanguageWordCreateSchema, LanguageWordUpdateSchema } from '../schemas/language-word.schema'
-import { IdParamSchema, NameParamSchema } from '../schemas/core/general.schema'
-import { languageService } from '../services/language.service'
+import { LanguageWordCreateSchema, LanguageWordUpdateSchema } from '../schemas/language-word.schema.js'
+import { IdParamSchema, NameParamSchema } from '../schemas/core/general.schema.js'
+import { languageService } from '../services/language.service.js'
 
 export const languageController = {
   async getAll (res, next) {

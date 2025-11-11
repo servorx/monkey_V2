@@ -1,17 +1,19 @@
 import swaggerAutogen from 'swagger-autogen'
 
-export const doc = {
+const doc = {
   info: {
-    title: 'API de monkeytype',
+    title: 'API de MonkeyType',
     description: 'Documentación de la API para la gestión de mascotas'
   },
   host: 'localhost:4000',
   schemes: ['http']
 }
 
-const outputFile = './swagger_output.json'
-const endpointsFiles = ['./app.js'] // Cambia este archivo según el punto de entrada de tu API
+const outputFile = './src/swagger_output.json'
+const endpointsFiles = ['./app.js']
 
-swaggerAutogen(outputFile, endpointsFiles).then(() => {
-  require('./app.js') // Inicia el servidor automáticamente
+const swaggerAutogenInstance = swaggerAutogen()
+
+swaggerAutogenInstance(outputFile, endpointsFiles).then(async () => {
+  console.log('✅ Swagger JSON generado correctamente.')
 })

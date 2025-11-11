@@ -130,9 +130,9 @@ export class InvalidTokenError extends AppError {
 
 // errores de bases de datos
 // 500 — Error en base de datos
-export class FileStorageError extends AppError {
-  constructor (message = 'File storage operation failed', details = null) {
-    super(message, 500, details, 'FILE_STORAGE_ERROR')
+export class DatabaseError extends AppError {
+  constructor (message = 'Database operation failed', details = null) {
+    super(message, 500, details, 'DATABASE_ERROR')
   }
 }
 

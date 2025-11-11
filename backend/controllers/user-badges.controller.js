@@ -1,6 +1,6 @@
 import { UserBadgeCreateSchema, UserBadgeUpdateSchema } from '../schemas/user-badge.schema.js'
 import { IdParamSchema } from '../schemas/core/general.schema.js'
-import { userBadgeService } from '../services/user-badge.service.js'
+import { userBadgeService } from '../services/user-badges.service.js'
 
 export const userBadgeController = {
   async getAll (res, next) {

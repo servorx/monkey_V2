@@ -869,7 +869,7 @@
       "id": 145,
       "length": 74,
       "source": "Deduplicate list - programming-idioms.org",
-      "text": "use itertools::Itertools;\nlet dedup: Vec<_> = x.iter().unique().collect();"
+      "text": "use itertools::Itertools;\nlet dedup: Vec<_> = x.iter().collect();"
     },
     {
       "id": 146,

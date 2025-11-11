@@ -1,18 +1,9 @@
-import { Router } from 'express'
-import { validateSchema } from '../middlewares/validateSchema.js'
-import { registerUserSchema } from '../schemas/auth/user.schema.js'
+import express from 'express'
+import { login, register } from '../../controllers/auth/auth.controller.js'
 
-export const router = Router()
+const router = express.Router()
 
-router.post('/register', validateSchema(registerUserSchema), async (req, res) => {
-  // si llega hasta aca con el validador de schema, es que el usuario es válido
-  // TODO: saber que es context y que es lo que se pasa a la función
-  // TODO: saber que es user y que es lo que se pasa a la función
-  const user = await req.context.user.register(req.body)
-  res.status(201).json(user)
-})
-router.post('/login', validateSchema(registerUserSchema), async (req, res) => {
-  // si llega hasta aca con el validador de schema, es que el usuario es válido
-  const user = await req.context.user.login(req.body)
-  res.status(200).json(user)
-})
+router.post('/register', register)
+router.post('/login', login)
+
+export default router

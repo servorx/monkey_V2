@@ -8,3 +8,5 @@ router.get('/:id', roleController.getById)
 router.post('/', roleController.create)
 router.patch('/:id', roleController.update)
 router.delete('/:id', roleController.remove)
+
+export default router

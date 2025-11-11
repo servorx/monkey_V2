@@ -1,4 +1,4 @@
-import { wordMasteryRepository } from '../repositories/wordMastery.repository.js'
+import { wordMasteryRepository } from '../repositories/word-mastery.repository.js'
 import {
   NotFoundError,
   ConflictError,

@@ -1,44 +1,76 @@
-import { User } from '../../models/user.model.js'
+import { UserCreateSchema } from '../../schemas/auth/user.schema.js'
 import { comparePasswords, hashPassword } from '../../utils/password-hasher.js'
+import { ValidationError, AuthError, DatabaseError } from '../../utils/errors.js'
 
-export const login = async (req, res) => {
-  const { email, password } = req.body
-  const user = await User.findOne({ email })
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body
 
-  if (!user) {
-    return res.status(401).json({ message: 'Invalid Credentials' })
+    if (!email || !password) {
+      throw new ValidationError('Email and password are required')
+    }
+
+    const user = await UserCreateSchema.findOne({ email })
+    if (!user) {
+      throw new AuthError('Invalid credentials')
+    }
+
+    const isMatch = await comparePasswords(password, user.password)
+    if (!isMatch) {
+      throw new AuthError('Invalid credentials')
+    }
+
+    const token = user.generateAuthToken()
+
+    return res.status(200).json({
+      success: true,
+      message: 'Login successful',
+      token,
+      user: {
+        id: user._id,
+        email: user.email
+      }
+    })
+  } catch (error) {
+    next(error instanceof AuthError || error instanceof ValidationError
+      ? error
+      : new DatabaseError('Failed to process login', error.message))
   }
-
-  if (!comparePasswords(password, user.password)) {
-    return res.status(401).json({ message: 'Invalid Credentials' })
-  }
-
-  const token = user.generateAuthToken()
-
-  res.status(200).json({
-    message: 'Login Successful',
-    token
-  })
 }
 
-export const register = async (req, res) => {
-  const { email, password } = req.body
+export const register = async (req, res, next) => {
+  try {
+    const { email, password } = req.body
 
-  const user = await User.findOne({ email })
+    if (!email || !password) {
+      throw new ValidationError('Email and password are required')
+    }
 
-  if (user) {
-    return res.status(400).json({ message: 'User already exists' })
+    const existingUser = await UserCreateSchema.findOne({ email })
+    if (existingUser) {
+      throw new ValidationError('User already exists')
+    }
+
+    const hashedPassword = await hashPassword(password)
+    const newUser = await UserCreateSchema.create({
+      email,
+      password: hashedPassword
+    })
+
+    const token = newUser.generateAuthToken()
+
+    return res.status(201).json({
+      success: true,
+      message: 'User created successfully',
+      token,
+      user: {
+        id: newUser._id,
+        email: newUser.email
+      }
+    })
+  } catch (error) {
+    next(error instanceof ValidationError
+      ? error
+      : new DatabaseError('Failed to create user', error.message))
   }
-
-  const hashedPassword = await hashPassword(password)
-
-  const newUser = await User.create({
-    email,
-    password: hashedPassword
-  })
-
-  res.status(201).json({
-    message: 'User created successfully',
-    token: newUser.generateAuthToken()
-  })
 }

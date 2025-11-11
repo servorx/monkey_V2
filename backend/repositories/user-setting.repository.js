@@ -1,6 +1,6 @@
 import prisma from '../prisma/prismaClient.js'
 
-export const userSettingsRepository = {
+export const userSettingRepository = {
   async findAll () {
     return prisma.userSettings.findMany()
   },

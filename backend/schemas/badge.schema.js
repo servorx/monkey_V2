@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const BadgeBaseSchema = z.object({
-  name: z.string().min(3).max(50).unique(),
+  name: z.string().min(3).max(50),
   description: z.string().nullable().optional(),
   icon_url: z.string().url().nullable().optional(),
   min_score: z.number().int().default(0)

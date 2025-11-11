@@ -9,3 +9,5 @@ router.get('/:user_id/time-frame/:time_frame_id', leaderboardEntryController.get
 router.post('/', leaderboardEntryController.create)
 router.patch('/:id', leaderboardEntryController.update)
 router.delete('/:id', leaderboardEntryController.remove)
+
+export default router

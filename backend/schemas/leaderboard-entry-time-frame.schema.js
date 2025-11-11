@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const LeaderboardEntryTimeFrameBaseSchema = z.object({
-  time_frame: z.string().min(3).max(50).unique()
+  time_frame: z.string().min(3).max(50)
 })
 
 export const LeaderboardEntryTimeFrameCreateSchema = LeaderboardEntryTimeFrameBaseSchema

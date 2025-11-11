@@ -7,3 +7,5 @@ router.get('/:user_id', userSettingController.getByUserId)
 router.post('/', userSettingController.create)
 router.patch('/:user_id', userSettingController.update)
 router.delete('/:user_id', userSettingController.remove)
+
+export default router

@@ -9,3 +9,5 @@ router.get('/:name', languageController.getByName)
 router.post('/', languageController.create)
 router.patch('/:id', languageController.update)
 router.delete('/:id', languageController.remove)
+
+export default router

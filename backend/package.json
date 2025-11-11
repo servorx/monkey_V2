@@ -11,7 +11,8 @@
     "prisma:generate": "prisma generate",
     "seed": "node prisma/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fix": "eslint --fix ."
+    "fix": "eslint --fix .",
+    "swagger": "node swagger.js"
   },
   "keywords": [],
   "author": "",

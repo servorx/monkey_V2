@@ -1,4 +1,4 @@
-import { leaderboardEntryTimeFrameRepository } from '../repositories/leaderboard-time-frame.repository.js'
+import { leaderboardEntryTimeFrameRepository } from '../repositories/leaderboard-entry-time-frame.repository.js'
 import {
   ValidationError,
   NotFoundError,
@@ -6,7 +6,7 @@ import {
   DatabaseError
 } from '../utils/errors.js'
 
-export const leaderboardTimeFrameService = {
+export const leaderboardEntryTimeFrameService = {
   async getAll () {
     return leaderboardEntryTimeFrameRepository.findAll()
   },

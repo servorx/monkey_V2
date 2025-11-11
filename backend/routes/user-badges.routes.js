@@ -9,3 +9,5 @@ router.get('/:user_id/badge/:badge_id', userBadgeController.getByUserAndBadge)
 router.post('/', userBadgeController.create)
 router.patch('/:user_id/badge/:badge_id', userBadgeController.update)
 router.delete('/:user_id/badge/:badge_id', userBadgeController.remove)
+
+export default router

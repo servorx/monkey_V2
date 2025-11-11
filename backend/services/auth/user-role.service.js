@@ -1,4 +1,4 @@
-import { userRoleRepository } from '../../repositories/auth/user-role.repository'
+import { userRoleRepository } from '../../repositories/auth/user-role.repository.js'
 
 export const userRoleService = {
   async getAllUserRoles () {

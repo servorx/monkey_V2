@@ -1,4 +1,4 @@
-import { userBadgeRepository } from '../repositories/userBadge.repository.js'
+import { userBadgeRepository } from '../repositories/user-badge.repository.js'
 import {
   NotFoundError,
   ConflictError,
