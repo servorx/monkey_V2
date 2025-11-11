@@ -1,11 +1,12 @@
 import { WordCreateSchema, WordUpdateSchema } from '../schemas/word.schema.js'
+import { IdParamSchema, NameParamSchema } from '../schemas/core/general.schema.js'
 import { wordService } from '../services/word.service.js'
 
 export const wordController = {
   async getAll (req, res, next) {
     try {
       const words = await wordService.getAll()
-      res.json(words)
+      res.status(200).json(words)
     } catch (err) {
       next(err)
     }
@@ -13,9 +14,9 @@ export const wordController = {
 
   async getById (req, res, next) {
     try {
-      const id = Number(req.params.id)
+      const { id } = IdParamSchema.parse({ id: Number(req.params.id) })
       const word = await wordService.getById(id)
-      res.json(word)
+      res.status(200).json(word)
     } catch (err) {
       next(err)
     }
@@ -23,9 +24,9 @@ export const wordController = {
 
   async getByName (req, res, next) {
     try {
-      const name = req.params.name
+      const { name } = NameParamSchema.parse({ name: req.params.name })
       const word = await wordService.getByName(name)
-      res.json(word)
+      res.status(200).json(word)
     } catch (err) {
       next(err)
     }
@@ -43,10 +44,10 @@ export const wordController = {
 
   async update (req, res, next) {
     try {
-      const id = Number(req.params.id)
+      const { id } = IdParamSchema.parse({ id: Number(req.params.id) })
       const data = WordUpdateSchema.parse(req.body)
       const updated = await wordService.update(id, data)
-      res.json(updated)
+      res.status(200).json(updated)
     } catch (err) {
       next(err)
     }
@@ -54,7 +55,7 @@ export const wordController = {
 
   async remove (req, res, next) {
     try {
-      const id = Number(req.params.id)
+      const { id } = IdParamSchema.parse({ id: Number(req.params.id) })
       await wordService.remove(id)
       res.status(204).send()
     } catch (err) {

@@ -9,6 +9,14 @@ import userRoleRoutes from './auth/user-role.routes.js'
 import badgeRoutes from './badges/badge.routes.js'
 import languageRoutes from './badges/language.routes.js'
 import languageWordsRoutes from './badges/language-words.routes.js'
+import leaderboardEntryTimeFrameRoutes from './leaderboard/time-frame.routes.js'
+import leaderboardEntryRoutes from './leaderboard/entry.routes.js'
+import testRunRoutes from './test-run.routes.js'
+import userBadgeRoutes from './user-badges.routes.js'
+import userSettingRoutes from './user-settings.routes.js'
+import usersWordsRoutes from './user-words.routes.js'
+import wordMasteryRoutes from './word-mastery.routes.js'
+import wordRoutes from './words.routes.js'
 
 // crear router principal
 const router = Router()
@@ -24,5 +32,13 @@ router.use('/user-roles', userRoleRoutes)
 router.use('/badges', badgeRoutes)
 router.use('/languages', languageRoutes)
 router.use('/language-words', languageWordsRoutes)
+router.use('/leaderboard-time-frames', leaderboardEntryTimeFrameRoutes)
+router.use('/leaderboard-entries', leaderboardEntryRoutes)
+router.use('/test-runs', testRunRoutes)
+router.use('/user-badges', userBadgeRoutes)
+router.use('/user-settings', userSettingRoutes)
+router.use('/users-words', usersWordsRoutes)
+router.use('/word-mastery', wordMasteryRoutes)
+router.use('/words', wordRoutes)
 
 export default router
