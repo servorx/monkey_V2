@@ -1,27 +1,55 @@
-import { userSettingsRepository } from '../repositories/user-settings.repository'
+import { userSettingRepository } from '../repositories/userSetting.repository.js'
+import {
+  NotFoundError,
+  ValidationError,
+  DatabaseError,
+  ConflictError,
+  IntegrityError
+} from '../utils/errors.js'
 
-export const userSettingsService = {
-  async getAllUserSettings () {
-    return userSettingsRepository.findAll()
+export const userSettingService = {
+  async getByUserId (userId) {
+    if (!userId) throw new ValidationError('User ID is required')
+
+    const settings = await userSettingRepository.findByUserId(userId)
+    if (!settings) throw new NotFoundError('User settings not found')
+
+    return settings
   },
 
-  async getUserSettingsById (id) {
-    const userSettings = await userSettingsRepository.findById(id)
-    if (!userSettings) throw new Error('User settings not found')
-    return userSettings
+  async create (data) {
+    if (!data.user_id) throw new ValidationError('User ID is required')
+
+    const existing = await userSettingRepository.findByUserId(data.user_id)
+    if (existing) throw new ConflictError('User settings already exist')
+
+    try {
+      return await userSettingRepository.create(data)
+    } catch (err) {
+      if (err.code === 'P2003') throw new IntegrityError('Invalid user reference')
+      throw new DatabaseError('Failed to create user settings', err.message)
+    }
   },
 
-  async createUserSettings (data) {
-    const existing = await userSettingsRepository.findByUserId(data.user_id)
-    if (existing) throw new Error('User settings already in use')
-    return userSettingsRepository.create(data)
+  async update (userId, data) {
+    const existing = await userSettingRepository.findByUserId(userId)
+    if (!existing) throw new NotFoundError('User settings not found')
+
+    try {
+      return await userSettingRepository.update(userId, data)
+    } catch (err) {
+      throw new DatabaseError('Failed to update user settings', err.message)
+    }
   },
 
-  async updateUserSettings (id, data) {
-    return userSettingsRepository.update(id, data)
-  },
+  async remove (userId) {
+    const existing = await userSettingRepository.findByUserId(userId)
+    if (!existing) throw new NotFoundError('User settings not found')
 
-  async deleteUserSettings (id) {
-    return userSettingsRepository.delete(id)
+    try {
+      await userSettingRepository.delete(userId)
+    } catch (err) {
+      throw new DatabaseError('Failed to delete user settings', err.message)
+    }
   }
 }

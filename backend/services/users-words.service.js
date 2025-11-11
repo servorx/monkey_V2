@@ -1,27 +1,67 @@
-import { usersWordsRepository } from '../repositories/users-words.repository'
+import { userWordRepository } from '../repositories/userWord.repository.js'
+import {
+  NotFoundError,
+  ConflictError,
+  ValidationError,
+  IntegrityError,
+  DatabaseError
+} from '../utils/errors.js'
 
-export const usersWordsService = {
-  async getAllUsersWords () {
-    return usersWordsRepository.findAll()
+export const userWordService = {
+  async getAll () {
+    try {
+      return await userWordRepository.findAll()
+    } catch (err) {
+      throw new DatabaseError('Failed to fetch user words', err.message)
+    }
   },
 
-  async getUsersWordsById (id) {
-    const usersWords = await usersWordsRepository.findById(id)
-    if (!usersWords) throw new Error('Users words not found')
-    return usersWords
+  async getAllByUser (userId) {
+    if (!userId) throw new ValidationError('User ID is required')
+
+    try {
+      const words = await userWordRepository.findByUserId(userId)
+      return words
+    } catch (err) {
+      throw new DatabaseError('Failed to fetch user words', err.message)
+    }
   },
 
-  async createUsersWords (data) {
-    const existing = await usersWordsRepository.findByUserId(data.user_id)
-    if (existing) throw new Error('Users words already in use')
-    return usersWordsRepository.create(data)
+  async create (userId, wordId) {
+    if (!userId || !wordId) {
+      throw new ValidationError('User ID and Word ID are required')
+    }
+
+    const existing = await userWordRepository.findByCompositeKey(userId, wordId)
+    if (existing) throw new ConflictError('Word already added to favorites')
+
+    try {
+      return await userWordRepository.create({ user_id: userId, word_id: wordId })
+    } catch (err) {
+      if (err.code === 'P2003') throw new IntegrityError('Invalid user or word reference')
+      throw new DatabaseError('Failed to add user word', err.message)
+    }
   },
 
-  async updateUsersWords (id, data) {
-    return usersWordsRepository.update(id, data)
+  async remove (userId, wordId) {
+    const existing = await userWordRepository.findByCompositeKey(userId, wordId)
+    if (!existing) throw new NotFoundError('Word not found in user list')
+
+    try {
+      await userWordRepository.delete(userId, wordId)
+    } catch (err) {
+      throw new DatabaseError('Failed to remove user word', err.message)
+    }
   },
 
-  async deleteUsersWords (id) {
-    return usersWordsRepository.delete(id)
+  async update (userId, wordId, data) {
+    const existing = await userWordRepository.findByCompositeKey(userId, wordId)
+    if (!existing) throw new NotFoundError('Word not found in user list')
+
+    try {
+      return await userWordRepository.update(userId, wordId, data)
+    } catch (err) {
+      throw new DatabaseError('Failed to update user word', err.message)
+    }
   }
 }

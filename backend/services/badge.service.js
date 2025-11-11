@@ -1,29 +1,56 @@
 import { badgeRepository } from '../repositories/badge.repository.js'
+import { NotFoundError, DatabaseError, IntegrityError, ConflictError } from '../utils/errors.js'
 
 export const badgeService = {
-  async getAllBadges () {
-    return badgeRepository.findAll()
+  async getAll () {
+    try {
+      return await badgeRepository.findAll()
+    } catch (err) {
+      throw new DatabaseError('Failed to fetch badges', err.message)
+    }
   },
 
-  async getBadgeById (id) {
+  async getById (id) {
     const badge = await badgeRepository.findById(id)
-    if (!badge) throw new Error('Badge not found')
+    if (!badge) throw new NotFoundError('Badge not found')
     return badge
   },
 
-  async createBadge (data) {
-    const existing = await badgeRepository.findByName(data.name)
-    if (existing) throw new Error('Badge name already in use')
-    return badgeRepository.create(data)
+  async getByName (name) {
+    const badge = await badgeRepository.findByName(name)
+    if (!badge) throw new NotFoundError('Badge not found')
+    return badge
   },
 
-  async updateBadge (id, data) {
+  async create (data) {
     const existing = await badgeRepository.findByName(data.name)
-    if (existing) throw new Error('Badge name already in use')
-    return badgeRepository.update(id, data)
+    if (existing) throw new ConflictError('Badge name already in use')
+    try {
+      return await badgeRepository.create(data)
+    } catch (err) {
+      if (err.code === 'P2002') throw new IntegrityError('Unique constraint failed on badge')
+      throw new DatabaseError('Failed to create badge', err.message)
+    }
   },
 
-  async deleteBadge (id) {
-    return badgeRepository.delete(id)
+  async update (id, data) {
+    const existing = await badgeRepository.findByName(data.name)
+    if (existing) throw new ConflictError('Badge name already in use')
+    try {
+      return await badgeRepository.update(id, data)
+    } catch (err) {
+      throw new DatabaseError('Failed to update badge', err.message)
+    }
+  },
+
+  async remove (id) {
+    const existing = await badgeRepository.findById(id)
+    if (!existing) throw new NotFoundError('Badge not found')
+    try {
+      await badgeRepository.delete(id)
+    } catch (err) {
+      if (err.code === 'P2003') throw new IntegrityError('Cannot delete badge with active relations')
+      throw new DatabaseError('Failed to delete badge', err.message)
+    }
   }
 }

@@ -1,27 +1,64 @@
-import { wordMasteryRepository } from '../repositories/word-mastery.repository'
+import { wordMasteryRepository } from '../repositories/wordMastery.repository.js'
+import {
+  NotFoundError,
+  ConflictError,
+  ValidationError,
+  IntegrityError,
+  DatabaseError
+} from '../utils/errors.js'
 
 export const wordMasteryService = {
-  async getAllWordMastery () {
-    return wordMasteryRepository.findAll()
+  async getByUser (userId) {
+    if (!userId) throw new ValidationError('User ID is required')
+    try {
+      return await wordMasteryRepository.findByUserId(userId)
+    } catch (err) {
+      throw new DatabaseError('Failed to fetch user mastery data', err.message)
+    }
   },
 
-  async getWordMasteryById (id) {
-    const wordMastery = await wordMasteryRepository.findById(id)
-    if (!wordMastery) throw new Error('Word mastery not found')
-    return wordMastery
+  async getByUserAndWord (userId, wordId) {
+    if (!userId || !wordId) throw new ValidationError('User ID and Word ID are required')
+    const mastery = await wordMasteryRepository.findByCompositeKey(userId, wordId)
+    if (!mastery) throw new NotFoundError('Word mastery record not found')
+    return mastery
   },
 
-  async createWordMastery (data) {
-    const existing = await wordMasteryRepository.findByUserId(data.user_id)
-    if (existing) throw new Error('Word mastery already in use')
-    return wordMasteryRepository.create(data)
+  async create (data) {
+    if (!data.user_id || !data.word_id) {
+      throw new ValidationError('User ID and Word ID are required')
+    }
+
+    const existing = await wordMasteryRepository.findByCompositeKey(data.user_id, data.word_id)
+    if (existing) throw new ConflictError('Word mastery record already exists')
+
+    try {
+      return await wordMasteryRepository.create(data)
+    } catch (err) {
+      if (err.code === 'P2003') throw new IntegrityError('Invalid user or word reference')
+      throw new DatabaseError('Failed to create word mastery record', err.message)
+    }
   },
 
-  async updateWordMastery (id, data) {
-    return wordMasteryRepository.update(id, data)
+  async update (userId, wordId, data) {
+    const existing = await wordMasteryRepository.findByCompositeKey(userId, wordId)
+    if (!existing) throw new NotFoundError('Word mastery record not found')
+
+    try {
+      return await wordMasteryRepository.update(userId, wordId, data)
+    } catch (err) {
+      throw new DatabaseError('Failed to update word mastery', err.message)
+    }
   },
 
-  async deleteWordMastery (id) {
-    return wordMasteryRepository.delete(id)
+  async remove (userId, wordId) {
+    const existing = await wordMasteryRepository.findByCompositeKey(userId, wordId)
+    if (!existing) throw new NotFoundError('Word mastery record not found')
+
+    try {
+      await wordMasteryRepository.delete(userId, wordId)
+    } catch (err) {
+      throw new DatabaseError('Failed to delete word mastery record', err.message)
+    }
   }
 }
