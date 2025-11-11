@@ -3,7 +3,7 @@ import { IdParamSchema, NameParamSchema } from '../schemas/core/general.schema'
 import { languageService } from '../services/language.service'
 
 export const languageController = {
-  async getAll (req, res, next) {
+  async getAll (res, next) {
     try {
       const languages = await languageService.getAll()
       res.status(200).json(languages)

@@ -1,4 +1,4 @@
-import { userWordRepository } from '../repositories/userWord.repository.js'
+import { userWordRepository } from '../repositories/user-word.repository.js'
 import {
   NotFoundError,
   ConflictError,

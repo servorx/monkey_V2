@@ -3,7 +3,7 @@ import { IdParamSchema } from '../schemas/core/general.schema.js'
 import { userBadgeService } from '../services/user-badge.service.js'
 
 export const userBadgeController = {
-  async getAll (req, res, next) {
+  async getAll (res, next) {
     try {
       const userBadges = await userBadgeService.getAll()
       res.status(200).json(userBadges)

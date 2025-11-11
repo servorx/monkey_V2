@@ -3,6 +3,15 @@ import { IdParamSchema } from '../schemas/core/general.schema.js'
 import { userSettingService } from '../services/user-settings.service.js'
 
 export const userSettingController = {
+  async getAll (res, next) {
+    try {
+      const userSettings = await userSettingService.getAll()
+      res.status(200).json(userSettings)
+    } catch (err) {
+      next(err)
+    }
+  },
+
   async getByUserId (req, res, next) {
     try {
       // eslint-disable-next-line camelcase

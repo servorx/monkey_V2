@@ -1,6 +1,6 @@
 import prisma from '../prisma/prismaClient.js'
 
-export const usersWordsRepository = {
+export const userWordRepository = {
   async findAll () {
     return prisma.usersWords.findMany()
   },

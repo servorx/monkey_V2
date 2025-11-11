@@ -3,7 +3,7 @@ import { IdParamSchema } from '../schemas/core/general.schema.js'
 import { leaderboardEntryService } from '../services/leaderboard-entry.service.js'
 
 export const leaderboardEntryController = {
-  async getAll (req, res, next) {
+  async getAll (res, next) {
     try {
       const leaderboardEntries = await leaderboardEntryService.getAll()
       res.status(200).json(leaderboardEntries)

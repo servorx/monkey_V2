@@ -1,11 +1,11 @@
 import { UsersWordsCreateSchema, UsersWordsUpdateSchema } from '../schemas/users-words.schema.js'
 import { IdParamSchema } from '../schemas/core/general.schema.js'
-import { usersWordsService } from '../services/users-words.service.js'
+import { userWordService } from '../services/users-words.service.js'
 
 export const usersWordsController = {
   async getAll (req, res, next) {
     try {
-      const usersWords = await usersWordsService.getAll()
+      const usersWords = await userWordService.getAll()
       res.status(200).json(usersWords)
     } catch (err) {
       next(err)
@@ -16,7 +16,7 @@ export const usersWordsController = {
     try {
       // eslint-disable-next-line camelcase
       const { user_id } = IdParamSchema.parse({ user_id: Number(req.params.user_id) })
-      const usersWords = await usersWordsService.getByUserId(user_id)
+      const usersWords = await userWordService.getByUserId(user_id)
       res.status(200).json(usersWords)
     } catch (err) {
       next(err)
@@ -30,7 +30,7 @@ export const usersWordsController = {
         user_id: Number(req.params.user_id),
         word_id: Number(req.params.word_id)
       })
-      const usersWords = await usersWordsService.getByUserAndWord(user_id, word_id)
+      const usersWords = await userWordService.getByUserAndWord(user_id, word_id)
       res.status(200).json(usersWords)
     } catch (err) {
       next(err)
@@ -40,7 +40,7 @@ export const usersWordsController = {
   async create (req, res, next) {
     try {
       const data = UsersWordsCreateSchema.parse(req.body)
-      const newUsersWords = await usersWordsService.create(data)
+      const newUsersWords = await userWordService.create(data)
       res.status(201).json(newUsersWords)
     } catch (err) {
       next(err)
@@ -55,7 +55,7 @@ export const usersWordsController = {
         word_id: Number(req.params.word_id)
       })
       const data = UsersWordsUpdateSchema.parse(req.body)
-      const updated = await usersWordsService.update(user_id, word_id, data)
+      const updated = await userWordService.update(user_id, word_id, data)
       res.status(200).json(updated)
     } catch (err) {
       next(err)
@@ -69,7 +69,7 @@ export const usersWordsController = {
         user_id: Number(req.params.user_id),
         word_id: Number(req.params.word_id)
       })
-      await usersWordsService.remove(user_id, word_id)
+      await userWordService.remove(user_id, word_id)
       res.status(204).send()
     } catch (err) {
       next(err)

@@ -3,7 +3,7 @@ import { IdParamSchema, NameParamSchema } from '../schemas/core/general.schema.j
 import { leaderboardEntryTimeFrameService } from '../services/leaderboard-entry-time-frame.service.js'
 
 export const leaderboardEntryTimeFrameController = {
-  async getAll (req, res, next) {
+  async getAll (res, next) {
     try {
       const leaderboardEntryTimeFrames = await leaderboardEntryTimeFrameService.getAll()
       res.status(200).json(leaderboardEntryTimeFrames)
