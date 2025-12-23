@@ -21,7 +21,7 @@
         }
       }
     },
-    "/api/v1/auth/register": {
+    "/auth/register": {
       "post": {
         "description": "",
         "parameters": [
@@ -48,7 +48,7 @@
         }
       }
     },
-    "/api/v1/auth/login": {
+    "/auth/login": {
       "post": {
         "description": "",
         "parameters": [
@@ -75,7 +75,7 @@
         }
       }
     },
-    "/api/v1/auth/refresh-token/": {
+    "/auth/refresh-token/": {
       "get": {
         "description": "",
         "responses": {
@@ -99,7 +99,7 @@
         }
       }
     },
-    "/api/v1/auth/refresh-token/{id}": {
+    "/auth/refresh-token/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -149,7 +149,7 @@
         }
       }
     },
-    "/api/v1/roles/": {
+    "/roles/": {
       "get": {
         "description": "",
         "responses": {
@@ -173,7 +173,7 @@
         }
       }
     },
-    "/api/v1/roles/{id}": {
+    "/roles/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -223,7 +223,7 @@
         }
       }
     },
-    "/api/v1/users/": {
+    "/users/": {
       "get": {
         "description": "",
         "responses": {
@@ -247,7 +247,7 @@
         }
       }
     },
-    "/api/v1/users/{id}": {
+    "/users/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -297,7 +297,7 @@
         }
       }
     },
-    "/api/v1/user-roles/": {
+    "/user-roles/": {
       "get": {
         "description": "",
         "responses": {
@@ -321,7 +321,7 @@
         }
       }
     },
-    "/api/v1/user-roles/{id}": {
+    "/user-roles/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -371,7 +371,7 @@
         }
       }
     },
-    "/api/v1/badges/": {
+    "/badges/": {
       "get": {
         "description": "",
         "responses": {
@@ -389,7 +389,7 @@
         }
       }
     },
-    "/api/v1/badges/{id}": {
+    "/badges/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -439,7 +439,7 @@
         }
       }
     },
-    "/api/v1/languages/": {
+    "/languages/": {
       "get": {
         "description": "",
         "responses": {
@@ -457,7 +457,7 @@
         }
       }
     },
-    "/api/v1/languages/{id}": {
+    "/languages/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -507,7 +507,7 @@
         }
       }
     },
-    "/api/v1/languages/{name}": {
+    "/languages/{name}": {
       "get": {
         "description": "",
         "parameters": [
@@ -525,7 +525,7 @@
         }
       }
     },
-    "/api/v1/language-words/": {
+    "/language-words/": {
       "get": {
         "description": "",
         "responses": {
@@ -543,7 +543,7 @@
         }
       }
     },
-    "/api/v1/language-words/{id}": {
+    "/language-words/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -593,7 +593,7 @@
         }
       }
     },
-    "/api/v1/language-words/{name}": {
+    "/language-words/{name}": {
       "get": {
         "description": "",
         "parameters": [
@@ -611,7 +611,7 @@
         }
       }
     },
-    "/api/v1/leaderboard-time-frames/": {
+    "/leaderboard-time-frames/": {
       "get": {
         "description": "",
         "responses": {
@@ -629,7 +629,7 @@
         }
       }
     },
-    "/api/v1/leaderboard-time-frames/{id}": {
+    "/leaderboard-time-frames/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -679,7 +679,7 @@
         }
       }
     },
-    "/api/v1/leaderboard-time-frames/{name}": {
+    "/leaderboard-time-frames/{name}": {
       "get": {
         "description": "",
         "parameters": [
@@ -697,7 +697,7 @@
         }
       }
     },
-    "/api/v1/leaderboard-entries/": {
+    "/leaderboard-entries/": {
       "get": {
         "description": "",
         "responses": {
@@ -715,7 +715,7 @@
         }
       }
     },
-    "/api/v1/leaderboard-entries/{id}": {
+    "/leaderboard-entries/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -765,7 +765,7 @@
         }
       }
     },
-    "/api/v1/leaderboard-entries/{user_id}/time-frame/{time_frame_id}": {
+    "/leaderboard-entries/{user_id}/time-frame/{time_frame_id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -789,7 +789,7 @@
         }
       }
     },
-    "/api/v1/test-runs/": {
+    "/test-runs/": {
       "get": {
         "description": "",
         "responses": {
@@ -807,7 +807,7 @@
         }
       }
     },
-    "/api/v1/test-runs/{id}": {
+    "/test-runs/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -857,7 +857,7 @@
         }
       }
     },
-    "/api/v1/test-runs/{user_id}/language/{language_id}": {
+    "/test-runs/{user_id}/language/{language_id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -881,7 +881,7 @@
         }
       }
     },
-    "/api/v1/user-badges/": {
+    "/user-badges/": {
       "get": {
         "description": "",
         "responses": {
@@ -899,7 +899,7 @@
         }
       }
     },
-    "/api/v1/user-badges/{user_id}/badge": {
+    "/user-badges/{user_id}/badge": {
       "get": {
         "description": "",
         "parameters": [
@@ -917,7 +917,7 @@
         }
       }
     },
-    "/api/v1/user-badges/{user_id}/badge/{badge_id}": {
+    "/user-badges/{user_id}/badge/{badge_id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -985,7 +985,7 @@
         }
       }
     },
-    "/api/v1/user-settings/{user_id}": {
+    "/user-settings/{user_id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -1035,7 +1035,7 @@
         }
       }
     },
-    "/api/v1/user-settings/": {
+    "/user-settings/": {
       "post": {
         "description": "",
         "responses": {
@@ -1045,7 +1045,7 @@
         }
       }
     },
-    "/api/v1/users-words/": {
+    "/users-words/": {
       "get": {
         "description": "",
         "responses": {
@@ -1063,75 +1063,7 @@
         }
       }
     },
-    "/api/v1/users-words/{user_id}/word/{word_id}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "word_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "patch": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "word_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "word_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/api/v1/word-mastery/{user_id}/word/{word_id}": {
+    "/users-words/{user_id}/word/{word_id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -1199,7 +1131,75 @@
         }
       }
     },
-    "/api/v1/word-mastery/": {
+    "/word-mastery/{user_id}/word/{word_id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "word_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "word_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "word_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/word-mastery/": {
       "post": {
         "description": "",
         "responses": {
@@ -1209,7 +1209,7 @@
         }
       }
     },
-    "/api/v1/words/": {
+    "/words/": {
       "get": {
         "description": "",
         "responses": {
@@ -1227,7 +1227,7 @@
         }
       }
     },
-    "/api/v1/words/{id}": {
+    "/words/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -1277,7 +1277,7 @@
         }
       }
     },
-    "/api/v1/words/{name}": {
+    "/words/{name}": {
       "get": {
         "description": "",
         "parameters": [

@@ -27,13 +27,15 @@ const swaggerFile = JSON.parse(readFileSync(new URL('./swagger_output.json', imp
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 // 📦 Rutas principales
-app.use('/api/v1', routes)
+app.use('/', routes)
 
 // Middleware de errores
 app.use(validationErrorHandler)
 app.use(globalErrorHandler)
 
 // Ruta base
-app.get('/', (_, res) => res.send('🚀 API funcionando correctamente'))
+app.get('/', (_, res) => res.send({
+    "status": "ok",
+}))
 
 export default app
