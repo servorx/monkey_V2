@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.18.0",
+    "@prisma/client": "^6.19.1",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -27,7 +27,7 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.15.3",
-    "prisma": "6.18.0",
+    "prisma": "^6.19.1",
     "zod": "^4.1.12"
   },
   "devDependencies": {
@@ -40,5 +40,8 @@
   },
   "eslintConfig": {
     "extends": "standard"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
   }
 }

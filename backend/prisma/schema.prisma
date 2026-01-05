@@ -6,10 +6,8 @@ generator client {
 datasource db {
   // proveedor de la base de datos
   provider = "mysql"
-  // conexion a la base de datos
   url      = env("DATABASE_URL")
 }
-
 model User {
   id                  Int           @id @default(autoincrement())
   username            String        @unique

@@ -35,7 +35,7 @@ app.use(globalErrorHandler)
 
 // Ruta base
 app.get('/', (_, res) => res.send({
-    "status": "ok",
+  status: 'ok'
 }))
 
 export default app
